@@ -6,6 +6,7 @@ var tasksInProgressEl = document.querySelector("#tasks-in-progress");
 var tasksCompletedEl = document.querySelector("#tasks-completed");
 var pageContentEl = document.querySelector("#page-content");
 var tasks = [];
+var emptyArray = [];
 
 var taskFormHandler = function (event) {
     event.preventDefault();
@@ -284,6 +285,24 @@ var saveTasks = function () {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+var loadTasks = function () {
+    // gets task items from localStorage
+    var tasker = localStorage.getItem("tasks")
+    console.log(tasks)
+
+    if (tasker === null) {
+        emptyArray.push(tasker)
+        return false
+    }
+    //convertstasks from the stringified format back into and array of objects
+    tasker = JSON.parse(tasker);
+    //iterates through tasks array and creates task elements on the page from it
+
+    for (var i = 0; i < tasker.length; i++) {
+        createTaskEl(tasker[i]);
+    }
+}
+
 // Create a new task
 formEl.addEventListener("submit", taskFormHandler);
 
@@ -300,4 +319,6 @@ pageContentEl.addEventListener("dragover", dropZoneDraghandler);
 pageContentEl.addEventListener("drop", dropTaskHandler);
 
 pageContentEl.addEventListener("dragleave", dragLeaveHandler);
+
+loadTasks();
 
