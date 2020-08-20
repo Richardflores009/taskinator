@@ -188,7 +188,7 @@ var dropZoneDraghandler = function (event) {
     var taskListEl = event.target.closest(".task-list");
     if (taskListEl) {
         event.preventDefault();
-        //console.dir(taskListEl);
+        taskListEl.setAttribute("style", "background: rgba(68, 233, 255, 0.7); border-style: dashed;");
     }
 };
 
@@ -207,9 +207,20 @@ var dropTaskHandler = function (event) {
     else if (statusType === "tasks-completed") {
         statusSelectEl.selectedIndex = 2;
     }
+
+    // added above append so that the background color dissapears before drop is completed
+    dropZoneEl.removeAttribute("style");
+
     dropZoneEl.appendChild(draggableElement);
 
 };
+
+var dragLeaveHandler = function (event) {
+    var taskListEl = event.target.closest(".task-list");
+    if (taskListEl) {
+        taskListEl.removeAttribute("style");
+    }
+}
 
 // Create a new task
 formEl.addEventListener("submit", taskFormHandler);
@@ -226,4 +237,5 @@ pageContentEl.addEventListener("dragover", dropZoneDraghandler);
 
 pageContentEl.addEventListener("drop", dropTaskHandler);
 
+pageContentEl.addEventListener("dragleave", dragLeaveHandler);
 
